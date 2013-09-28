@@ -1,12 +1,12 @@
-;;;; homepage.asd
+;;;; homesite.asd
 
-(asdf:defsystem #:homepage
+(asdf:defsystem #:homesite
   :serial t
-  :description "Describe homepage here"
+  :description "Describe homesite here"
   :author "Your Name <your.name@example.com>"
   :license "Specify license here"
   :depends-on (#:hunchentoot #:cl-who #:parenscript)
   :components ((:file "package")
-               (:file "homepage")
+               (:file "site")
                (:file "pages")))
 

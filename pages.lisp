@@ -1,4 +1,4 @@
-(in-package :homepage-pages)
+(in-package :site-pages)
 
 (define-easy-handler (pages-script :uri "/pages/script.js") ()
   (setf (content-type*) "text/javascript")

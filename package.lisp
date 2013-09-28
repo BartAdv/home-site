@@ -1,7 +1,7 @@
 ;;;; package.lisp
 
-(defpackage #:homepage
+(defpackage #:site
   (:use #:cl #:hunchentoot #:cl-who #:parenscript))
 
-(defpackage #:homepage-pages
+(defpackage #:site-pages
   (:use #:cl #:hunchentoot #:cl-who #:parenscript))

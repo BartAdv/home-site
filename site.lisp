@@ -1,20 +1,20 @@
-;;;; homepage.lisp
+;;;; site.lisp
 
-(in-package #:homepage)
+(in-package #:site)
 
-;;; "homepage" goes here. Hacks and glory await!
+;;; "site" goes here. Hacks and glory await!
 
 ;;; let's see!
 
 (defvar *web-server* (make-instance 'easy-acceptor :port 4242))
 (hunchentoot:start *web-server*)
 
-(push (create-folder-dispatcher-and-handler "/static/" #p"/homepage/") *dispatch-table*)
+(push (create-folder-dispatcher-and-handler "/static/" #p"/homesite/") *dispatch-table*)
 
-(define-easy-handler (homepage-module :uri "/app.js") ()
+(define-easy-handler (site-module :uri "/app.js") ()
   (setf (content-type*) "text/javascript")
   (ps (chain angular
-             (module "homepage" (array))
+             (module "homesite" (array))
              (config (array "$routeProvider" 
                             (lambda($routeProvider) 
                               (chain $routeProvider 
@@ -23,7 +23,7 @@
 (define-easy-handler (get-post :uri "/") ()
                      (with-html-output-to-string 
                        (*standard-output* nil :indent t)
-                       (:html :ng-app "homepage"
+                       (:html :ng-app "homesite"
                          (:head
                            (:title "Under construction"))
                            (:script :src "https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js")
