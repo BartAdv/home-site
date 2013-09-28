@@ -22,6 +22,11 @@
      (with-html-output-to-string (*standard-output* nil :indent t)
        ,@html)))
 
+(defmacro define-resource ((name uri) &body body)
+  `(define-easy-handler (,name :uri ,uri) ()
+     (setf (content-type*) "application/json")
+     (with-output-to-string (s) (encode-json ,@body s))))
+
 (define-script (site-module "/app.js")
   (chain angular
          (module "homesite" (array))
