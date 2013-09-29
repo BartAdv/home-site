@@ -9,7 +9,7 @@
 (defvar *web-server* (make-instance 'easy-acceptor :port 4242))
 (hunchentoot:start *web-server*)
 
-(push (create-folder-dispatcher-and-handler "/static/" #p"/homesite/") *dispatch-table*)
+(push (create-folder-dispatcher-and-handler "/static/" #p"~/content/") *dispatch-table*)
 
 (defmacro define-script ((name uri) &body script)
   `(define-easy-handler (,name :uri ,uri) ()
