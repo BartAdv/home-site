@@ -22,8 +22,8 @@
      (with-html-output-to-string (*standard-output* nil :indent t)
        ,@html)))
 
-(defmacro define-resource ((name uri) &body body)
-  `(define-easy-handler (,name :uri ,uri) ()
+(defmacro define-resource ((name uri &rest args) &body body)
+  `(define-easy-handler (,name :uri ,uri) (,args)
      (setf (content-type*) "application/json")
      (with-output-to-string (s) (encode-json ,@body s))))
 
@@ -33,7 +33,8 @@
          (config (array "$routeProvider" 
                         (lambda($routeProvider) 
                           (chain $routeProvider 
-                                 (when "/pages" (create 'template-url "/pages/index.html" :controller 'pages-ctrl))))))))
+                                 (when "/pages" (create 'template-url "/pages/index.html" :controller 'pages-ctrl))
+                                 (when "/page" (create 'template-url "/pages/view.html" :controller 'page-ctrl))))))))
 
 (define-html (get-post "/")
   (:html :ng-app "homesite"
