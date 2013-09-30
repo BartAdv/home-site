@@ -26,14 +26,20 @@
   (gethash id *pages*))
 
 (define-script (pages-script "/pages/script.js")
+  (chain angular
+         (module "pages" [])
+         (factory "Page" (lambda ($http $route-params)
+                              (chain $http
+                                     (get (concatenate 'string "/pages/page?id="
+                                                       (@ $route-params id)))))))
+
+                           
   (defun pages-ctrl($scope $route-params $http)
     (chain $http 
            (get "/pages/index") 
            (success (lambda (data) (setf (@ $scope pages) data)))))
-  (defun page-ctrl ($scope $http)
-    (chain $http
-           (get (+ "/page?id=" (@ $scope id)))
-           (success (lambda (data) (setf (@ $scope page) data))))))
+  (defun page-ctrl ($scope *page)
+    (chain *page (then (lambda (results) (setf (@ $scope page) (@ results data)))))))
            
 
 (define-html (pages-index-html "/pages/index.html")

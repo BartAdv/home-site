@@ -23,18 +23,19 @@
        ,@html)))
 
 (defmacro define-resource ((name uri &rest args) &body body)
-  `(define-easy-handler (,name :uri ,uri) (,args)
+  (let ((args (when (not (null args)) args)))
+  `(define-easy-handler (,name :uri ,uri) ,args
      (setf (content-type*) "application/json")
-     (with-output-to-string (s) (encode-json ,@body s))))
+     (with-output-to-string (s) (encode-json ,@body s)))))
 
 (define-script (site-module "/app.js")
   (chain angular
-         (module "homesite" (array))
+         (module "homesite" (array "pages"))
          (config (array "$routeProvider" 
                         (lambda($routeProvider) 
                           (chain $routeProvider 
                                  (when "/pages" (create 'template-url "/pages/index.html" :controller 'pages-ctrl))
-                                 (when "/page" (create 'template-url "/pages/view.html" :controller 'page-ctrl))))))))
+                                 (when "/page/:id" (create 'template-url "/pages/view.html" :controller 'page-ctrl))))))))
 
 (define-html (get-post "/")
   (:html :ng-app "homesite"
