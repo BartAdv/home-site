@@ -42,6 +42,7 @@
    (:head
      (:title "Under construction"))
    (:script :src "https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js")
+   (:script :src "https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular-resource.min.js")
    (:script :src "/app.js")
    (:script :src "/pages/script.js")
    (:body

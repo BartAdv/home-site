@@ -27,19 +27,16 @@
 
 (define-script (pages-script "/pages/script.js")
   (chain angular
-         (module "pages" [])
-         (factory "Page" (lambda ($http $route-params)
-                              (chain $http
-                                     (get (concatenate 'string "/pages/page?id="
-                                                       (@ $route-params id)))))))
+         (module "pages" ["ngResource"])
+         (factory "Page" (lambda ($resource) ($resource "/pages/page"))))
 
                            
   (defun pages-ctrl($scope $route-params $http)
     (chain $http 
            (get "/pages/index") 
            (success (lambda (data) (setf (@ $scope pages) data)))))
-  (defun page-ctrl ($scope *page)
-    (chain *page (then (lambda (results) (setf (@ $scope page) (@ results data)))))))
+  (defun page-ctrl ($scope *page $route-params)
+    (setf (@ $scope page) (chain *page (get (create :id (@ $route-params id )))))))
            
 
 (define-html (pages-index-html "/pages/index.html")
