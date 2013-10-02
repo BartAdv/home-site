@@ -1,10 +1,7 @@
 (in-package :site-pages)
 
 (defclass page ()
-  ((id :initarg :id
-    :initform (error "Id required")
-    :accessor page-id)
-   (title :initarg :title
+  ((title :initarg :title
           :initform (error "Title requried")
           :accessor page-title)
    (text :initarg :text
@@ -19,7 +16,6 @@
           (file-position stream 0)
           (read-sequence text stream)
           (make-instance 'page 
-                         :id id
                          :text text
                          :title title))))))
 
