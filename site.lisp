@@ -31,6 +31,12 @@
 (define-script (site-module "/app.js")
   (chain angular
          (module "homesite" (array "pages"))
+         (directive "toMarkdown" (lambda ()
+                                   (create :restrict "A"
+                                           :scope (create :text "=")
+                                           :controller (lambda ($scope $element)
+                                                         (chain $scope ($watch "text" (lambda () (if (@ $scope text) (chain $element (html (chain markdown (to-H-T-M-L (@ $scope text)))))))))))))
+
          (config (array "$routeProvider" 
                         (lambda($routeProvider) 
                           (chain $routeProvider 

@@ -7,15 +7,18 @@
    (text :initarg :text
          :accessor page-text)))
 
+(defmacro with-page ((id stream) &body body)
+  `(let ((path (merge-pathnames #p"~/pages/" ,id)))
+     (when (probe-file path)
+       (with-open-file (stream path) ,@body))))
+
 (defun get-page (id)
-  (let ((path (merge-pathnames #p"~/pages/" id)))
-  (when (probe-file path)
-    (with-open-file (stream path)
-      (let ((text (make-string (file-length stream))))
+  (with-page (id stream)
+        (let ((text (make-string (file-length stream))))
         (read-sequence text stream)
         (make-instance 'page 
                        :text text
-                       :title id))))))
+                       :title id))))
 
 (define-resource (pages-index "/pages/index") 
   (let (res (list))
@@ -45,5 +48,5 @@
      (:ul (:p "{{page.title}}"))))
 
 (define-html (pages-view-html "/pages/view.html")
-             (:div "{{page.text}}"))
+             (:div :to-markdown "" :text "page.text"))
 
