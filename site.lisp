@@ -37,12 +37,13 @@
                                  (when "/pages" (create 'template-url "/pages/index.html" :controller 'pages-ctrl))
                                  (when "/page/:id" (create 'template-url "/pages/view.html" :controller 'page-ctrl))))))))
 
-(define-html (get-post "/")
+(define-html (get-root "/")
   (:html :ng-app "homesite"
    (:head
      (:title "Under construction"))
    (:script :src "https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js")
    (:script :src "https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular-resource.min.js")
+   (:script :src "/static/markdown.min.js")
    (:script :src "/app.js")
    (:script :src "/pages/script.js")
    (:body

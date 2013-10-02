@@ -7,13 +7,15 @@
    (text :initarg :text
          :accessor page-text)))
 
-(defparameter *pages* (make-hash-table :test 'equal))
-(setf (gethash "firstPage" *pages*) 
-      (make-instance 'page
-                     :title "First page" :text "This is the page' text"))
-(setf (gethash "secondPage" *pages*) 
-      (make-instance 'page
-                     :title "Second page" :text "Omnomnomnom"))
+(defun get-page (id)
+  (let ((path (merge-pathnames #p"~/pages/" id)))
+  (when (probe-file path)
+    (with-open-file (stream path)
+      (let ((text (make-string (file-length stream))))
+        (read-sequence text stream)
+        (make-instance 'page 
+                       :text text
+                       :title id))))))
 
 (define-resource (pages-index "/pages/index") 
   (let (res (list))
@@ -23,14 +25,12 @@
              res))
 
 (define-resource (pages-page "/pages/page" id)
-  (gethash id *pages*))
+  (get-page id))
 
 (define-script (pages-script "/pages/script.js")
   (chain angular
          (module "pages" ["ngResource"])
          (factory "Page" (lambda ($resource) ($resource "/pages/page"))))
-
-                           
   (defun pages-ctrl($scope $route-params $http)
     (chain $http 
            (get "/pages/index") 
